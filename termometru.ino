@@ -1,9 +1,9 @@
 #include <LiquidCrystal.h>
 #include "Wire.h"
      #define DS1307_ADDRESS 0x68
-     byte zero = 0x00; //workaround for issue #527       
- LiquidCrystal lcd(12, 11, 5, 4, 3, 2); //Digital pins to which you connect the LCD
- const int inPin = 0;                   // A0 is where you connect the sensor
+     byte zero = 0x00;       
+ LiquidCrystal lcd(12, 11, 5, 4, 3, 2); 
+ const int inPin = 0;                   
  void setup()
  {
   lcd.begin(16,2);
@@ -51,23 +51,23 @@ Wire.write(decToBcd(year));
   Wire.endTransmission();
 }
 byte decToBcd(byte val){
-// Convert normal decimal numbers to binary coded decimal
+
   return ( (val/10*16) + (val%10) );
 }
 byte bcdToDec(byte val)  {
-// Convert binary coded decimal to normal decimal numbers
+
   return ( (val/16*10) + (val%16) );
 }
 void printDate(){
-  // Reset the register pointer
+  
   Wire.beginTransmission(DS1307_ADDRESS);
   Wire.write(zero);
   Wire.endTransmission();
   Wire.requestFrom(DS1307_ADDRESS, 7);
   int second = bcdToDec(Wire.read());
   int minute = bcdToDec(Wire.read());
-  int hour = bcdToDec(Wire.read() & 0b111111); //24 hour time
-  int weekDay = bcdToDec(Wire.read()); //0-6 -> sunday - Saturday
+  int hour = bcdToDec(Wire.read() & 0b111111); 
+  int weekDay = bcdToDec(Wire.read()); 
   int monthDay = bcdToDec(Wire.read());
   int month = bcdToDec(Wire.read());
   int year = bcdToDec(Wire.read());
